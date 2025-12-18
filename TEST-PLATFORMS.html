@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MeetingNotes - Platform Testing Links</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 10px;
+      font-size: 32px;
+    }
+
+    .subtitle {
+      color: #666;
+      margin-bottom: 30px;
+      font-size: 16px;
+    }
+
+    .instructions {
+      background: #f0f7ff;
+      border-left: 4px solid #4A90E2;
+      padding: 20px;
+      margin-bottom: 30px;
+      border-radius: 8px;
+    }
+
+    .instructions h2 {
+      color: #4A90E2;
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+
+    .instructions ol {
+      margin-left: 20px;
+      line-height: 1.8;
+    }
+
+    .section {
+      margin-bottom: 40px;
+    }
+
+    .section h2 {
+      color: #333;
+      margin-bottom: 15px;
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .tier-badge {
+      background: #4A90E2;
+      color: white;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .tier-badge.tier2 {
+      background: #10B981;
+    }
+
+    .platform-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .platform-card {
+      background: #f8f9fa;
+      border: 2px solid #e0e0e0;
+      border-radius: 12px;
+      padding: 20px;
+      transition: all 0.3s;
+    }
+
+    .platform-card:hover {
+      border-color: #4A90E2;
+      box-shadow: 0 4px 12px rgba(74, 144, 226, 0.2);
+      transform: translateY(-2px);
+    }
+
+    .platform-name {
+      font-size: 18px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 8px;
+    }
+
+    .platform-url {
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 15px;
+      font-family: monospace;
+      word-break: break-all;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 10px 20px;
+      background: #4A90E2;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn:hover {
+      background: #357ABD;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn-all {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 15px 30px;
+      font-size: 16px;
+      margin-bottom: 30px;
+    }
+
+    .btn-all:hover {
+      background: linear-gradient(135deg, #5568d3 0%, #653a8b 100%);
+    }
+
+    .status-icon {
+      display: inline-block;
+      margin-right: 5px;
+    }
+
+    .note {
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      color: #856404;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid #e0e0e0;
+      color: #666;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎯 MeetingNotes Platform Testing</h1>
+    <p class="subtitle">Click any button to test the extension on that platform</p>
+
+    <div class="instructions">
+      <h2>📋 Testing Instructions</h2>
+      <ol>
+        <li>Click "Open All Platforms" button (or individual platform buttons)</li>
+        <li>Each platform will open in a new tab</li>
+        <li>Join or start a meeting/call on each platform</li>
+        <li>Verify the MeetingNotes extension detects the meeting</li>
+        <li>Check for: Green status dot + "In [Platform] meeting" message</li>
+      </ol>
+    </div>
+
+    <div class="note">
+      ⚠️ <strong>Note:</strong> Some platforms require you to create an account or join an existing meeting. Use test URLs or create test rooms as needed.
+    </div>
+
+    <button class="btn btn-all" onclick="openTestable()">🚀 Open Easy Test Platforms (5 tabs)</button>
+    <button class="btn btn-all" onclick="openAllPlatforms()" style="background: #6C757D; margin-left: 10px;">📋 Open All Platforms (15 tabs)</button>
+
+    <!-- Best for Testing -->
+    <div class="section" style="background: #f0fff4; padding: 20px; border-radius: 12px; border: 2px solid #10B981; margin-bottom: 30px;">
+      <h2 style="color: #10B981;">
+        <span class="status-icon">⭐</span>
+        Best for Testing - No Account Needed!
+      </h2>
+      <div class="platform-grid">
+        <div class="platform-card" style="border-color: #10B981;">
+          <div class="platform-name">Jitsi Meet</div>
+          <div class="platform-url">https://meet.jit.si/MeetingNotesTest</div>
+          <button class="btn" style="background: #10B981;" onclick="openPlatform('https://meet.jit.si/MeetingNotesTest')">🎯 Test Now (Best!)</button>
+        </div>
+
+        <div class="platform-card" style="border-color: #10B981;">
+          <div class="platform-name">Whereby</div>
+          <div class="platform-url">https://whereby.com/meetingnotes-test</div>
+          <button class="btn" style="background: #10B981;" onclick="openPlatform('https://whereby.com/meetingnotes-test')">🎯 Test Now</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tier 1 Platforms -->
+    <div class="section">
+      <h2>
+        <span class="status-icon">✅</span>
+        Tier 1: Specific Detection
+        <span class="tier-badge">Requires Setup</span>
+      </h2>
+      <div class="platform-grid">
+        <div class="platform-card">
+          <div class="platform-name">Zoom Web Client</div>
+          <div class="platform-url">https://zoom.us/wc/join/123456789</div>
+          <button class="btn" onclick="openPlatform('https://zoom.us/wc/join/123456789')">Open Zoom (Browser)</button>
+          <div style="font-size: 11px; color: #dc3545; margin-top: 5px;">⚠️ Replace 123456789 with real meeting ID</div>
+        </div>
+
+        <div class="platform-card">
+          <div class="platform-name">Google Meet</div>
+          <div class="platform-url">https://meet.google.com/new</div>
+          <button class="btn" onclick="openPlatform('https://meet.google.com/new')">Create Meeting</button>
+          <div style="font-size: 11px; color: #666; margin-top: 5px;">📝 Must create/join meeting first</div>
+        </div>
+
+        <div class="platform-card">
+          <div class="platform-name">Microsoft Teams</div>
+          <div class="platform-url">https://teams.microsoft.com</div>
+          <button class="btn" onclick="openPlatform('https://teams.microsoft.com')">Open Teams</button>
+          <div style="font-size: 11px; color: #666; margin-top: 5px;">📝 Must join active meeting</div>
+        </div>
+
+        <div class="platform-card">
+          <div class="platform-name">Webex</div>
+          <div class="platform-url">https://www.webex.com/test-meeting.html</div>
+          <button class="btn" onclick="openPlatform('https://www.webex.com/test-meeting.html')">Test Webex</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tier 2 Platforms -->
+    <div class="section">
+      <h2>
+        <span class="status-icon">🔄</span>
+        Tier 2: Generic Detection
+        <span class="tier-badge tier2">Media Detection</span>
+      </h2>
+      <div class="platform-grid">
+        <div class="platform-card">
+          <div class="platform-name">Whereby</div>
+          <div class="platform-url">https://whereby.com/test</div>
+          <button class="btn" onclick="openPlatform('https://whereby.com/test')">Open Whereby</button>
+        </div>
+
+        <div class="platform-card">
+          <div class="platform-name">BlueJeans</div>
+          <div class="platform-url">https://www.bluejeans.com</div>
+          <button class="btn" onclick="openPlatform('https://www.bluejeans.com')">Open BlueJeans</button>
+        </div>
+
+        <div class="platform-card">
+          <div class="platform-name">GoToMeeting</div>
+          <div class="platform-url">https://www.gotomeeting.com</div>
+          <button class="btn" onclick="openPlatform('https://www.gotomeeting.com')">Open GoToMeeting</button>
+        </div>
+
+        <div class="platform-card">
+          <div class="platform-name">RingCentral</div>
+          <div class="platform-url">https://www.ringcentral.com</div>
+          <button class="btn" onclick="openPlatform('https://www.ringcentral.com')">Open RingCentral</button>
+        </div>
+
+        <div class="platform-card">
+          <div class="platform-name">Skype</div>
+          <div class="platform-url">https://web.skype.com</div>
+          <button class="btn" onclick="openPlatform('https://web.skype.com')">Open Skype</button>
+        </div>
+
+        <div class="platform-card">
+          <div class="platform-name">Slack Huddles</div>
+          <div class="platform-url">https://slack.com</div>
+          <button class="btn" onclick="openPlatform('https://slack.com')">Open Slack</button>
+        </div>
+
+        <div class="platform-card">
+          <div class="platform-name">Dialpad</div>
+          <div class="platform-url">https://dialpad.com</div>
+          <button class="btn" onclick="openPlatform('https://dialpad.com')">Open Dialpad</button>
+        </div>
+
+        <div class="platform-card">
+          <div class="platform-name">Amazon Chime</div>
+          <div class="platform-url">https://app.chime.aws</div>
+          <button class="btn" onclick="openPlatform('https://app.chime.aws')">Open Amazon Chime</button>
+        </div>
+
+        <div class="platform-card">
+          <div class="platform-name">Discord</div>
+          <div class="platform-url">https://discord.com/channels/@me</div>
+          <button class="btn" onclick="openPlatform('https://discord.com/channels/@me')">Open Discord</button>
+        </div>
+
+        <div class="platform-card">
+          <div class="platform-name">Jitsi Meet (Test 2)</div>
+          <div class="platform-url">https://meet.jit.si/TestRoom2</div>
+          <button class="btn" onclick="openPlatform('https://meet.jit.si/TestRoom2')">Open Another Jitsi</button>
+        </div>
+
+        <div class="platform-card">
+          <div class="platform-name">Around</div>
+          <div class="platform-url">https://www.around.co</div>
+          <button class="btn" onclick="openPlatform('https://www.around.co')">Open Around</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p><strong>MeetingNotes</strong> v1.0.0</p>
+      <p>Testing 15+ video/audio calling platforms</p>
+    </div>
+  </div>
+
+  <script>
+    function openPlatform(url) {
+      window.open(url, '_blank');
+    }
+
+    function openTestable() {
+      const platforms = [
+        'https://meet.jit.si/MeetingNotesTest',
+        'https://whereby.com/meetingnotes-test',
+        'https://discord.com/channels/@me',
+        'https://meet.jit.si/TestRoom2',
+        'https://meet.google.com/new'
+      ];
+
+      if (confirm(`This will open ${platforms.length} easy-to-test platforms. Continue?`)) {
+        platforms.forEach((url, index) => {
+          setTimeout(() => {
+            window.open(url, '_blank');
+          }, index * 400);
+        });
+      }
+    }
+
+    function openAllPlatforms() {
+      const platforms = [
+        // Easy tests first
+        'https://meet.jit.si/MeetingNotesTest',
+        'https://whereby.com/meetingnotes-test',
+        // Then others
+        'https://meet.google.com/new',
+        'https://zoom.us/wc/join/123456789',
+        'https://teams.microsoft.com',
+        'https://www.webex.com/test-meeting.html',
+        'https://www.bluejeans.com',
+        'https://www.gotomeeting.com',
+        'https://www.ringcentral.com',
+        'https://web.skype.com',
+        'https://slack.com',
+        'https://dialpad.com',
+        'https://app.chime.aws',
+        'https://discord.com/channels/@me',
+        'https://www.around.co'
+      ];
+
+      if (confirm(`This will open ${platforms.length} tabs. Many require accounts. Continue?`)) {
+        platforms.forEach((url, index) => {
+          setTimeout(() => {
+            window.open(url, '_blank');
+          }, index * 400);
+        });
+      }
+    }
+  </script>
+</body>
+</html>

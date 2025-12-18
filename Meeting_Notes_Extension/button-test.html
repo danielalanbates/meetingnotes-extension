@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Button Test</title>
+  <style>
+    body { padding: 40px; font-family: Arial; }
+    button { padding: 20px 40px; font-size: 18px; margin: 10px; cursor: pointer; background: #4A90E2; color: white; border: none; border-radius: 8px; }
+    button:hover { background: #357ABD; }
+    #log { background: #f4f4f4; padding: 20px; margin-top: 20px; border-radius: 8px; font-family: monospace; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <h1>Button Click Test</h1>
+  <p>Click the button below. If it works, you'll see console logs and an alert.</p>
+
+  <button id="testBtn" onclick="testClick()">🧪 Click Me To Test</button>
+
+  <div id="log"></div>
+
+  <script>
+    const log = document.getElementById('log');
+
+    function addLog(message) {
+      log.textContent += message + '\n';
+      console.log(message);
+    }
+
+    function testClick() {
+      addLog('✅ Button clicked!');
+      addLog('✅ onclick handler works!');
+      alert('✅ Button works! Now testing chrome.storage...');
+
+      if (typeof chrome !== 'undefined' && chrome.storage) {
+        addLog('✅ Chrome API available');
+
+        chrome.storage.local.set({
+          test: 'success',
+          timestamp: new Date().toISOString()
+        }, () => {
+          addLog('✅ Chrome storage write successful');
+          alert('✅ Everything works! Buttons should work on premium.html too.');
+        });
+      } else {
+        addLog('❌ Chrome API not available');
+        alert('❌ Chrome API not found. Make sure you\'re viewing this as an extension page:\nchrome-extension://YOUR-ID/button-test.html');
+      }
+    }
+
+    // Also test addEventListener
+    document.addEventListener('DOMContentLoaded', () => {
+      addLog('📄 Page loaded (DOMContentLoaded fired)');
+
+      const btn = document.getElementById('testBtn');
+      if (btn) {
+        addLog('✅ Button found in DOM');
+        btn.addEventListener('click', () => {
+          addLog('✅ addEventListener also works!');
+        });
+      } else {
+        addLog('❌ Button not found');
+      }
+    });
+  </script>
+</body>
+</html>

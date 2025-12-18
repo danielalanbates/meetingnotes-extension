@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BatesAI Test Page - Open in Chrome</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 40px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+    }
+
+    .card {
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+
+    h1 {
+      margin: 0 0 20px 0;
+      color: #333;
+      font-size: 36px;
+    }
+
+    .instructions {
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 12px;
+      margin: 20px 0;
+      border-left: 4px solid #667eea;
+    }
+
+    .step {
+      margin: 15px 0;
+      padding: 15px;
+      background: white;
+      border-radius: 8px;
+      border: 2px solid #e9ecef;
+    }
+
+    .step strong {
+      color: #667eea;
+      font-size: 18px;
+    }
+
+    code {
+      background: #f1f3f5;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      color: #e83e8c;
+      font-size: 13px;
+    }
+
+    .code-block {
+      background: #2d3748;
+      color: #e2e8f0;
+      padding: 20px;
+      border-radius: 8px;
+      margin: 15px 0;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    button {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      margin: 10px 5px 10px 0;
+      transition: all 0.2s;
+    }
+
+    button:hover {
+      background: #5568d3;
+      transform: translateY(-2px);
+    }
+
+    .success {
+      background: #d4edda;
+      border: 2px solid #c3e6cb;
+      color: #155724;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 15px 0;
+    }
+
+    .warning {
+      background: #fff3cd;
+      border: 2px solid #ffc107;
+      color: #856404;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 15px 0;
+    }
+
+    .error {
+      background: #f8d7da;
+      border: 2px solid #f5c6cb;
+      color: #721c24;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 15px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>🚀 BatesAI Premium - Testing Guide</h1>
+
+    <div class="warning">
+      <strong>⚠️ Important:</strong> This page must be loaded as a Chrome extension page, not from <code>file://</code>
+    </div>
+
+    <div class="instructions">
+      <h2 style="margin-top: 0;">📋 Follow These Steps:</h2>
+
+      <div class="step">
+        <strong>Step 1:</strong> Load the Extension<br>
+        1. Open Chrome and go to <code>chrome://extensions/</code><br>
+        2. Enable "Developer mode" (toggle in top right)<br>
+        3. Click "Load unpacked"<br>
+        4. Select the folder: <code>meeting-notes-extension</code><br>
+        5. Extension should load successfully
+      </div>
+
+      <div class="step">
+        <strong>Step 2:</strong> Find Your Extension ID<br>
+        1. On <code>chrome://extensions/</code> page<br>
+        2. Find "BatesAI Meeting Notes"<br>
+        3. Look for "ID:" (long string like <code>abcdefgh...</code>)<br>
+        4. Copy the entire ID
+      </div>
+
+      <div class="step">
+        <strong>Step 3:</strong> Open Premium Page<br>
+        Open a new tab and paste:<br>
+        <code>chrome-extension://YOUR-ID-HERE/premium.html</code><br>
+        (Replace YOUR-ID-HERE with the ID you copied)
+      </div>
+
+      <div class="step">
+        <strong>OR EASIER - Use Console:</strong><br>
+        1. Click the BatesAI extension icon in toolbar<br>
+        2. Press <code>F12</code> to open Developer Tools<br>
+        3. Click "Console" tab<br>
+        4. Paste this and press Enter:
+        <div class="code-block">window.open(chrome.runtime.getURL('premium.html'))</div>
+      </div>
+    </div>
+
+    <h2>🎯 Quick Activation (Console Method)</h2>
+    <p>If buttons don't work on the premium page, use this console method:</p>
+
+    <div class="step">
+      <strong>1. Open Extension Popup</strong><br>
+      Click the BatesAI icon in Chrome toolbar
+    </div>
+
+    <div class="step">
+      <strong>2. Open Console</strong><br>
+      Press <code>F12</code> or right-click → Inspect
+    </div>
+
+    <div class="step">
+      <strong>3. Activate Premium</strong><br>
+      Paste this code and press Enter:
+      <div class="code-block">chrome.storage.local.set({
+  isPremium: true,
+  premiumMethod: 'demo',
+  premiumActivatedAt: new Date().toISOString(),
+  premiumFeatures: {
+    aiSummarize: true,
+    aiActionItems: true,
+    aiFormat: true,
+    aiEmail: true
+  }
+}, () => {
+  alert('✅ Premium Activated!');
+  location.reload();
+});</div>
+    </div>
+
+    <div class="step">
+      <strong>4. (Optional) Add API Key for Real AI</strong><br>
+      To test actual AI features, get a key from <a href="https://platform.openai.com/api-keys" target="_blank">platform.openai.com</a> then run:
+      <div class="code-block">chrome.storage.local.set({
+  openai_api_key: 'sk-YOUR-KEY-HERE'
+}, () => {
+  alert('✅ API Key Saved!');
+});</div>
+    </div>
+
+    <h2>🧪 Test AI Features from Console</h2>
+    <p>After activating premium and adding API key:</p>
+
+    <div class="code-block">// Create AI service instance
+const aiService = new AIService();
+await aiService.initialize();
+
+// Test Summary
+const summary = await aiService.summarizeNotes(
+  "Team meeting about Q4. Budget approved $50K. Launch March 15."
+);
+console.log('SUMMARY:', summary);
+
+// Test Action Items
+const items = await aiService.extractActionItems(
+  "John needs to finish login by Wednesday. Sarah will review docs."
+);
+console.log('ACTION ITEMS:', items);
+
+// Test Formatting
+const formatted = await aiService.formatNotes(
+  "client call, agreed 10% discount, 6 week timeline"
+);
+console.log('FORMATTED:', formatted);
+
+// Test Email
+const email = await aiService.generateFollowUpEmail(
+  "Met with Acme Corp. Agreed to terms. Next meeting March 1."
+);
+console.log('EMAIL:', email);</div>
+
+    <h2>❌ Troubleshooting</h2>
+
+    <div class="step">
+      <strong>"chrome is not defined"</strong><br>
+      → You're on a <code>file://</code> page. Follow Step 3 above to open extension page.
+    </div>
+
+    <div class="step">
+      <strong>"AIService is not defined"</strong><br>
+      → Make sure you're in the extension popup console, not a regular page.<br>
+      → Or manually load: <code>&lt;script src="ai-service.js"&gt;&lt;/script&gt;</code>
+    </div>
+
+    <div class="step">
+      <strong>Buttons don't work on premium.html</strong><br>
+      → Use the console activation method above instead.<br>
+      → Check browser console (F12) for error messages.
+    </div>
+
+    <div class="step">
+      <strong>"Invalid API Key" errors</strong><br>
+      → Make sure your OpenAI key starts with <code>sk-</code><br>
+      → Check you have credits at platform.openai.com/account/usage<br>
+      → Verify internet connection
+    </div>
+
+    <div class="success">
+      <strong>✅ Success Looks Like:</strong><br>
+      • Premium status shows as active<br>
+      • Console shows no errors<br>
+      • AI functions return text results<br>
+      • You see formatted summaries, action items, etc.
+    </div>
+
+    <button onclick="copyCommand('activate')">📋 Copy Activation Command</button>
+    <button onclick="copyCommand('apikey')">📋 Copy API Key Command</button>
+    <button onclick="copyCommand('test')">📋 Copy Test Commands</button>
+
+    <div id="status" style="margin-top: 20px;"></div>
+  </div>
+
+  <script>
+    function copyCommand(type) {
+      let text = '';
+
+      if (type === 'activate') {
+        text = `chrome.storage.local.set({
+  isPremium: true,
+  premiumMethod: 'demo',
+  premiumActivatedAt: new Date().toISOString(),
+  premiumFeatures: {
+    aiSummarize: true,
+    aiActionItems: true,
+    aiFormat: true,
+    aiEmail: true
+  }
+}, () => {
+  alert('✅ Premium Activated!');
+  location.reload();
+});`;
+      } else if (type === 'apikey') {
+        text = `chrome.storage.local.set({
+  openai_api_key: 'sk-YOUR-KEY-HERE'
+}, () => {
+  alert('✅ API Key Saved!');
+});`;
+      } else if (type === 'test') {
+        text = `const aiService = new AIService();
+await aiService.initialize();
+const summary = await aiService.summarizeNotes("Team meeting about Q4. Budget approved $50K. Launch March 15.");
+console.log('SUMMARY:', summary);`;
+      }
+
+      navigator.clipboard.writeText(text).then(() => {
+        const status = document.getElementById('status');
+        status.innerHTML = '<div class="success">✅ Copied to clipboard! Now paste in the extension console (F12)</div>';
+        setTimeout(() => {
+          status.innerHTML = '';
+        }, 3000);
+      }).catch(() => {
+        const status = document.getElementById('status');
+        status.innerHTML = '<div class="error">❌ Could not copy. Please copy manually from the code blocks above.</div>';
+      });
+    }
+
+    // Check if we're in an extension context
+    if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.id) {
+      document.querySelector('.warning').innerHTML = '<strong>✅ Good:</strong> You\'re viewing this from the extension context!<br>The buttons below should work.';
+      document.querySelector('.warning').className = 'success';
+    }
+  </script>
+</body>
+</html>

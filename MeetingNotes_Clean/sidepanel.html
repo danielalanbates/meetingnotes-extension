@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple MeetingNotes</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <div class="logo-section">
+        <img src="icons/meetingnotes-logo.svg" alt="MeetingNotes Logo" class="logo">
+        <h1>MeetingNotes</h1>
+      </div>
+      <div class="header-actions">
+        <button id="themesBtn" class="icon-btn" title="Themes">🎨</button>
+        <button id="settingsBtn" class="icon-btn" title="Settings">⚙️</button>
+      </div>
+    </header>
+
+    <!-- Color Theme Selector -->
+    <div class="theme-section" id="themeSection" style="display: none;">
+      <div class="theme-label">Interface Theme</div>
+      <div class="theme-options" id="themeOptions">
+        <button class="theme-btn active" data-color-theme="blue">Blue</button>
+        <button class="theme-btn" data-color-theme="purple">Purple</button>
+        <button class="theme-btn" data-color-theme="green">Green</button>
+        <button class="theme-btn" data-color-theme="dark">Dark</button>
+      </div>
+    </div>
+
+    <!-- Meeting Info -->
+    <div class="meeting-info">
+      <div class="meeting-status" id="meetingStatus">
+        <span class="status-dot" id="statusDot"></span>
+        <span id="statusText">No Meeting Detected</span>
+      </div>
+      <div class="meeting-details" id="meetingDetails" style="display: none;">
+        <p class="meeting-platform" id="meetingPlatform"></p>
+      </div>
+    </div>
+
+    <!-- Template Selector -->
+    <div class="template-section" style="padding: 12px 20px; margin-bottom: 8px;">
+      <label for="templateSelect" style="margin-right: 8px; font-weight: 500;">Template:</label>
+      <select id="templateSelect" class="template-select">
+        <option value="blank">Blank</option>
+        <option value="general">General Meeting</option>
+        <option value="standup">Daily Standup</option>
+        <option value="1on1">One-on-One</option>
+        <option value="retrospective">Retrospective</option>
+      </select>
+    </div>
+
+    <!-- Notes Editor -->
+    <div class="notes-section">
+      <div class="editor-toolbar">
+        <div class="toolbar-group">
+          <button class="toolbar-btn" data-command="bold" title="Bold"><b>B</b></button>
+          <button class="toolbar-btn" data-command="italic" title="Italic"><i>I</i></button>
+          <button class="toolbar-btn" data-command="underline" title="Underline"><u>U</u></button>
+        </div>
+        <div class="toolbar-divider"></div>
+        <div class="toolbar-group">
+          <button class="toolbar-btn" data-command="insertUnorderedList" title="Bullet List">•</button>
+          <button class="toolbar-btn" data-command="insertOrderedList" title="Numbered List">1.</button>
+        </div>
+      </div>
+      <div id="notesEditor" class="notes-editor" contenteditable="true" role="textbox" aria-multiline="true" data-placeholder="Start taking notes..."></div>
+      <div class="editor-footer">
+        <span class="char-count" id="charCount">0 characters</span>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <button class="btn btn-secondary" id="clearBtn">Clear</button>
+      <button class="btn btn-secondary" id="exportBtn">Export</button>
+      <button class="btn btn-primary" id="saveBtn">Save Note</button>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+      <button class="quick-btn" id="viewHistoryBtn">📋 View History</button>
+    </div>
+
+    <!-- Footer Logo -->
+    <div class="footer-logo">
+      <span class="powered-by">Powered by</span>
+      <span class="bates-ai-logo">BatesAI</span>
+    </div>
+  </div>
+
+  <!-- Export Modal -->
+  <div id="exportModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Export Notes</h2>
+        <button class="close-btn" id="closeExportModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <h3>Send & Download</h3>
+        <div class="export-options">
+          <button class="export-option" data-format="email">
+            <span class="export-icon">📧</span>
+            <span>Email</span>
+          </button>
+          <button class="export-option" data-format="txt">
+            <span class="export-icon">📄</span>
+            <span>Plain Text (.txt)</span>
+          </button>
+          <button class="export-option" data-format="md">
+            <span class="export-icon">📝</span>
+            <span>Markdown (.md)</span>
+          </button>
+          <button class="export-option" data-format="html">
+            <span class="export-icon">🌐</span>
+            <span>HTML (.html)</span>
+          </button>
+          <button class="export-option" data-format="docx">
+            <span class="export-icon">📘</span>
+            <span>Word Document (.docx)</span>
+          </button>
+          <button class="export-option" data-format="gdoc">
+            <span class="export-icon">📗</span>
+            <span>Google Docs</span>
+          </button>
+          <button class="export-option" data-format="pages">
+            <span class="export-icon">📙</span>
+            <span>Apple Pages</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- History Modal -->
+  <div id="historyModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Notes History</h2>
+        <button class="close-btn" id="closeHistoryModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="historyList" class="history-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings Modal -->
+  <div id="settingsModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Settings</h2>
+        <button class="close-btn" id="closeSettingsModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="setting-row">
+          <div class="setting-label">
+            <span>Auto-save notes</span>
+            <span>Automatically save while you type</span>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="toggleAutoSave" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+
+        <h3 style="margin-top: 24px; margin-bottom: 16px; font-size: 16px; font-weight: 600;">Auto-Open Settings</h3>
+        <p style="margin-bottom: 16px; font-size: 13px; color: var(--text-secondary);">Choose which platforms should automatically open MeetingNotes</p>
+
+        <div class="auto-open-platforms">
+          <div class="platform-toggle">
+            <span class="platform-name">Zoom</span>
+            <label class="toggle-switch">
+              <input type="checkbox" class="toggle-platform" data-platform="Zoom" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="platform-toggle">
+            <span class="platform-name">Google Meet</span>
+            <label class="toggle-switch">
+              <input type="checkbox" class="toggle-platform" data-platform="Google Meet" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="platform-toggle">
+            <span class="platform-name">Microsoft Teams</span>
+            <label class="toggle-switch">
+              <input type="checkbox" class="toggle-platform" data-platform="Microsoft Teams" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="platform-toggle">
+            <span class="platform-name">Webex</span>
+            <label class="toggle-switch">
+              <input type="checkbox" class="toggle-platform" data-platform="Webex" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="platform-toggle">
+            <span class="platform-name">Whereby</span>
+            <label class="toggle-switch">
+              <input type="checkbox" class="toggle-platform" data-platform="Whereby" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="platform-toggle">
+            <span class="platform-name">Slack</span>
+            <label class="toggle-switch">
+              <input type="checkbox" class="toggle-platform" data-platform="Slack" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="platform-toggle">
+            <span class="platform-name">Discord</span>
+            <label class="toggle-switch">
+              <input type="checkbox" class="toggle-platform" data-platform="Discord" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="platform-toggle">
+            <span class="platform-name">Jitsi Meet</span>
+            <label class="toggle-switch">
+              <input type="checkbox" class="toggle-platform" data-platform="Jitsi Meet" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="platform-toggle">
+            <span class="platform-name">Other Platforms</span>
+            <label class="toggle-switch">
+              <input type="checkbox" class="toggle-platform" data-platform="Other" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Test Notification Button -->
+        <button id="testNotificationBtn" style="margin-top: 16px; width: 100%; padding: 12px; background: #3b82f6; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">
+          Test Desktop Notification
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Template Apply Modal -->
+  <div id="templateApplyModal" class="modal" style="display: none;">
+    <div class="modal-content" style="max-width: 500px;">
+      <div class="modal-header">
+        <h2>Apply Template</h2>
+        <button class="close-btn" id="closeTemplateApplyModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="margin-bottom: 24px; color: #374151; font-size: 15px; line-height: 1.5;">You have existing notes. How would you like to apply this template?</p>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <button class="btn btn-success" id="replaceKeepTextBtn" style="width: 100%; background: #10B981; padding: 16px; text-align: left;">
+            <div style="font-size: 16px; font-weight: 600; margin-bottom: 6px;">✨ Keep My Text</div>
+            <div style="font-size: 13px; opacity: 0.9; font-weight: 400; line-height: 1.4;">Remove template formatting but keep your typed content at the top</div>
+          </button>
+          <button class="btn btn-primary" id="appendTemplateBtn" style="width: 100%; padding: 16px; text-align: left;">
+            <div style="font-size: 16px; font-weight: 600; margin-bottom: 6px;">📌 Append Template</div>
+            <div style="font-size: 13px; opacity: 0.85; font-weight: 400; line-height: 1.4;">Add template below your current notes with a separator line</div>
+          </button>
+          <button class="btn btn-danger" id="replaceTemplateBtn" style="width: 100%; background: #DC3545; padding: 16px; text-align: left;">
+            <div style="font-size: 16px; font-weight: 600; margin-bottom: 6px;">🔄 Replace All Notes</div>
+            <div style="font-size: 13px; opacity: 0.9; font-weight: 400; line-height: 1.4;">Clear everything and start fresh with this template</div>
+          </button>
+          <button class="btn btn-secondary" id="cancelTemplateBtn" style="width: 100%; padding: 14px; margin-top: 4px;">
+            <div style="font-size: 15px; font-weight: 500;">✖️ Cancel</div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Save Note Title Modal -->
+  <div id="saveTitleModal" class="modal" style="display: none;">
+    <div class="modal-content" style="max-width: 500px;">
+      <div class="modal-header">
+        <h2>Save Note</h2>
+        <button class="close-btn" id="closeSaveTitleModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="margin-bottom: 16px; color: #374151; font-size: 15px;">Give your note a title:</p>
+        <input type="text" id="noteTitleInput" placeholder="e.g., Team Standup - Oct 25" style="width: 100%; padding: 12px; border: 2px solid var(--border); border-radius: 6px; font-size: 15px; margin-bottom: 20px; box-sizing: border-box;">
+        <div style="display: flex; gap: 12px;">
+          <button class="btn btn-primary" id="confirmSaveBtn" style="flex: 1; padding: 12px;">Save</button>
+          <button class="btn btn-secondary" id="cancelSaveBtn" style="flex: 1; padding: 12px;">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="sidepanel.js"></script>
+</body>
+</html>

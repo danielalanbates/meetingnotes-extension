@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MeetingNotes</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <div class="logo-section">
+        <img src="icons/meetingnotes-logo.svg" alt="MeetingNotes Logo" class="logo">
+        <h1>MeetingNotes</h1>
+      </div>
+      <div class="header-actions">
+        <button id="premiumBtn" class="icon-btn premium-btn" title="Upgrade to Premium">&#11088;</button>
+        <button id="themesBtn" class="icon-btn" title="Themes">&#127912;</button>
+        <button id="settingsBtn" class="icon-btn" title="Settings">&#9881;</button>
+      </div>
+    </header>
+
+    <!-- Meeting Info -->
+    <div class="meeting-info">
+      <div class="meeting-status" id="meetingStatus">
+        <span class="status-dot" id="statusDot"></span>
+        <span id="statusText">Not in meeting</span>
+      </div>
+      <div class="meeting-details" id="meetingDetails" style="display: none;">
+        <p class="meeting-title" id="meetingTitle"></p>
+        <p class="meeting-platform" id="meetingPlatform"></p>
+      </div>
+    </div>
+
+    <!-- Color Theme Selector -->
+    <div class="theme-section" id="themeSection">
+      <div class="theme-label">Interface Theme</div>
+      <div class="theme-options">
+        <button class="theme-btn active" data-color-theme="blue">Blue</button>
+        <button class="theme-btn" data-color-theme="purple">Purple</button>
+        <button class="theme-btn" data-color-theme="green">Green</button>
+        <button class="theme-btn" data-color-theme="dark">Dark</button>
+      </div>
+      <div class="template-quick-insert">
+        <select id="templateInsert" class="template-insert-select">
+          <option value="">Insert Template...</option>
+          <option value="general">Meeting Notes</option>
+          <option value="standup">Daily Standup</option>
+          <option value="retrospective">Retrospective</option>
+          <option value="1on1">One-on-One</option>
+        </select>
+      </div>
+    </div>
+
+
+    <!-- Notes Editor -->
+    <div class="notes-section">
+      <div class="editor-toolbar">
+        <div class="toolbar-group">
+          <button class="toolbar-btn" id="boldBtn" title="Bold"><b>B</b></button>
+          <button class="toolbar-btn" id="italicBtn" title="Italic"><i>I</i></button>
+          <button class="toolbar-btn" id="underlineBtn" title="Underline"><u>U</u></button>
+          <button class="toolbar-btn" id="strikeBtn" title="Strikethrough"><s>S</s></button>
+        </div>
+        <div class="toolbar-divider"></div>
+        <div class="toolbar-group">
+          <button class="toolbar-btn" id="h1Btn" title="Heading 1"><strong>H1</strong></button>
+          <button class="toolbar-btn" id="h2Btn" title="Heading 2"><strong>H2</strong></button>
+          <button class="toolbar-btn" id="h3Btn" title="Heading 3"><strong>H3</strong></button>
+        </div>
+        <div class="toolbar-divider"></div>
+        <div class="toolbar-group">
+          <button class="toolbar-btn" id="bulletBtn" title="Bullet List">&#8226;</button>
+          <button class="toolbar-btn" id="numberedBtn" title="Numbered List">1.</button>
+          <button class="toolbar-btn" id="taskBtn" title="Task Checkbox">&#9745;</button>
+          <button class="toolbar-btn" id="dashBtn" title="Dashed List">&#8722;</button>
+        </div>
+        <div class="toolbar-divider"></div>
+        <div class="toolbar-group">
+          <button class="toolbar-btn" id="quoteBtn" title="Quote">&#8220;</button>
+          <button class="toolbar-btn" id="codeBtn" title="Code">&lt;/&gt;</button>
+          <button class="toolbar-btn" id="linkBtn" title="Link">&#128279;</button>
+        </div>
+        <div class="toolbar-divider"></div>
+        <div class="toolbar-group">
+          <button class="toolbar-btn" id="highlightBtn" title="Highlight">&#9998;</button>
+          <button class="toolbar-btn premium-highlight" id="aiBtn" title="AI Features (Premium)">&#10024;</button>
+        </div>
+      </div>
+      <textarea id="notesEditor" placeholder="Start taking notes..."></textarea>
+      <div class="editor-footer">
+        <span class="char-count" id="charCount">0 characters</span>
+        <span class="auto-save" id="autoSaveStatus">Auto-save on</span>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <button class="btn btn-secondary" id="clearBtn">Clear</button>
+      <button class="btn btn-secondary" id="downloadBtn">Download</button>
+      <button class="btn btn-secondary" id="exportBtn">Share</button>
+      <button class="btn btn-primary" id="saveBtn">Save Note</button>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+      <button class="quick-btn" id="viewHistoryBtn">&#128203; View History</button>
+      <button class="quick-btn" id="templatesBtn">&#128221; Manage Templates</button>
+    </div>
+  </div>
+
+
+  <!-- Export Modal -->
+  <div id="exportModal" class="modal" style="display: none;">
+    <div class="modal-content export-modal">
+      <div class="modal-header">
+        <h2>Share & Export Notes</h2>
+        <button class="close-btn" id="closeExportModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="email-share">
+          <label for="emailTo">Send via email</label>
+          <input id="emailTo" type="email" class="email-input" placeholder="Recipient email">
+          <input id="emailSubject" type="text" class="email-subject" placeholder="Email subject">
+          <textarea id="emailPreview" class="email-preview" placeholder="Preview message"></textarea>
+          <div class="email-actions">
+            <button id="sendEmailBtn" class="btn btn-primary" type="button">Send Email</button>
+            <button id="copyEmailBtn" class="btn btn-secondary" type="button">Copy Email</button>
+          </div>
+        </div>
+
+        <div class="download-section">
+          <h3>Standard downloads</h3>
+          <div class="export-options">
+            <button class="export-option" data-format="txt">
+              <span class="export-icon">&#128196;</span>
+              <span>Plain Text (.txt)</span>
+            </button>
+            <button class="export-option" data-format="md">
+              <span class="export-icon">&#128221;</span>
+              <span>Markdown (.md)</span>
+            </button>
+            <button class="export-option" data-format="html">
+              <span class="export-icon">&#127760;</span>
+              <span>HTML (.html)</span>
+            </button>
+            <button class="export-option" data-format="json">
+              <span class="export-icon">&#128295;</span>
+              <span>JSON (.json)</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="premium-exports">
+          <h3>Premium exports</h3>
+          <div class="premium-options">
+            <button class="export-option premium-option locked" data-premium-format="word">
+              <span class="export-icon">&#128209;</span>
+              <span>Microsoft Word (.doc)</span>
+            </button>
+            <button class="export-option premium-option locked" data-premium-format="pages">
+              <span class="export-icon">&#128221;</span>
+              <span>Apple Pages (.pages)</span>
+            </button>
+            <button class="export-option premium-option locked" data-premium-format="gdocs">
+              <span class="export-icon">&#128214;</span>
+              <span>Google Docs copy</span>
+            </button>
+          </div>
+          <p class="premium-note-inline">Premium unlocks Word, Pages, and Google Docs exports.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings Modal -->
+  <div id="settingsModal" class="modal" style="display: none;">
+    <div class="modal-content settings-modal-content">
+      <div class="modal-header">
+        <h2>Configuration</h2>
+        <button class="close-btn" id="closeSettingsModal">&times;</button>
+      </div>
+      <div class="modal-body settings-body">
+        <div class="settings-group">
+          <h3>Notes</h3>
+          <div class="setting-row">
+            <div class="setting-label">
+              <span>Auto-save notes</span>
+              <span>Automatically save while you type</span>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="toggleAutoSave">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="setting-row">
+            <div class="setting-label">
+              <span>Match system theme</span>
+              <span>Sync with your OS light or dark mode</span>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="toggleSystemTheme">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI Services -->
+  <script src="ai-service.js"></script>
+  <script src="voice-notes.js"></script>
+  <script src="meeting-detection.js"></script>
+  <script src="recurring-meeting.js"></script>
+  <script src="recipient-detection.js"></script>
+  <script src="action-items.js"></script>
+  <script src="search-analytics.js"></script>
+  <script src="calendar-integration.js"></script>
+  <script src="slack-teams-integration.js"></script>
+  <script src="translation-service.js"></script>
+  <script src="series-tracker.js"></script>
+
+  <!-- Main UI Logic -->
+  <script src="popup.js"></script>
+</body>
+</html>

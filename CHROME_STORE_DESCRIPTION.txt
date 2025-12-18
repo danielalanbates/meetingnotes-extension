@@ -1,0 +1,111 @@
+MeetingNotes - Simple, Powerful Meeting Notes
+
+Take better meeting notes without AI subscriptions or complicated features. MeetingNotes works seamlessly with 15+ video platforms.
+
+🎯 KEY FEATURES
+
+✅ Platform Support
+• Zoom, Google Meet, Microsoft Teams (including Teams Live)
+• Webex, Whereby, BlueJeans, GoToMeeting
+• Slack, Discord, Skype, and 8 more platforms
+• Auto-detects when you join a meeting
+
+✅ Smart Templates
+• 5 pre-built templates: General, Standup, 1-on-1, Retrospective, Blank
+• Append to existing notes or start fresh
+• Keep your text when switching templates
+
+✅ Rich Text Editor
+• Bold, italic, underline, strikethrough
+• Headings, lists (bullets & numbers)
+• Clean, distraction-free interface
+• Character counter
+
+✅ Beautiful Themes
+• 4 color themes: Blue, Green, Purple, Dark
+• Optimized for readability
+• Persistent across sessions
+
+✅ Powerful Export Options
+• **Email** - One-click send to your email client (perfect for sharing with team)
+• **Markdown** - With proper headers & formatting
+• **Plain Text** - Simple and universal
+• **Word Document** (.doc) - Import to Microsoft Word
+• **HTML** - Standalone web page
+• **Google Docs** - Copy & paste ready
+• **Apple Pages** (.rtf) - For Mac users
+
+✅ History & Auto-Save
+• Save notes with timestamps
+• View and load past meetings
+• Auto-save as you type (optional)
+• Never lose your work
+
+✅ Privacy First
+• All data stored locally on your computer
+• No cloud sync, no external servers
+• No tracking, no analytics
+• No account required
+
+🚀 HOW IT WORKS
+
+1. Join any supported video meeting
+2. Blue indicator appears (top-right): "Click to Open MeetingNotes"
+3. Click to open the side panel
+4. Start taking notes with templates and formatting
+5. Auto-saves as you type
+6. Export via email or download when done
+
+💡 PERFECT FOR
+
+• **Business Professionals** - Email notes to team immediately after meetings
+• **Project Managers** - Track action items & decisions
+• **Developers** - Daily standups & sprint retrospectives
+• **Consultants** - Client meetings & follow-ups
+• **HR & Recruiters** - Interview notes
+• **Students & Educators** - Online classes & seminars
+
+📦 NO SUBSCRIPTIONS
+
+Unlike AI-powered note-taking tools, MeetingNotes is:
+• Completely free
+• No monthly fees
+• No feature limits
+• No account needed
+• Works offline
+
+🔒 YOUR DATA STAYS YOURS
+
+• 100% local storage (chrome.storage.local)
+• No external API calls
+• No telemetry or tracking
+• Never leaves your device
+
+---
+
+⚡ QUICK & LIGHTWEIGHT
+
+• Instant loading - no server delays
+• Works even without internet (after first install)
+• Minimal resource usage
+• No sign-ups or logins
+
+📧 EMAIL INTEGRATION
+
+The most requested feature from business users! One-click export to email:
+• Opens your default email client (Outlook, Gmail, Apple Mail)
+• Notes automatically formatted in email body
+• Subject line pre-filled with date
+• Just add recipients and send
+
+Perfect for:
+• Sending meeting summaries to attendees
+• Forwarding action items to team members
+• Creating email trails for documentation
+• Quick follow-ups after calls
+
+---
+
+Developed with ❤️ by BatesAI
+
+Support: https://github.com/batesai/MeetingNotes (if you create a repo)

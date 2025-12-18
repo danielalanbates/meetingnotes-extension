@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Simple Test</title>
+  <style>
+    body { font-family: Arial; padding: 40px; max-width: 600px; margin: 0 auto; }
+    button { padding: 15px 30px; font-size: 16px; margin: 10px; cursor: pointer; }
+    .success { background: #4CAF50; color: white; border: none; border-radius: 5px; }
+    .info { background: #2196F3; color: white; border: none; border-radius: 5px; }
+    pre { background: #f4f4f4; padding: 15px; border-radius: 5px; overflow-x: auto; }
+  </style>
+</head>
+<body>
+  <h1>BatesAI Quick Test</h1>
+
+  <h2>Step 1: Activate Premium (Demo Mode)</h2>
+  <button class="success" onclick="activatePremium()">✅ Activate Premium NOW</button>
+  <p id="status1"></p>
+
+  <h2>Step 2: Add API Key (Optional)</h2>
+  <input type="text" id="apikey" placeholder="sk-..." style="width: 400px; padding: 10px;">
+  <button class="info" onclick="saveApiKey()">💾 Save API Key</button>
+  <p id="status2"></p>
+
+  <h2>Step 3: Test AI Features</h2>
+  <button class="info" onclick="testSummary()">🧠 Test Summary</button>
+  <button class="info" onclick="testActions()">✅ Test Action Items</button>
+  <pre id="result"></pre>
+
+  <script src="ai-service.js"></script>
+  <script>
+    function activatePremium() {
+      chrome.storage.local.set({
+        isPremium: true,
+        premiumMethod: 'demo',
+        premiumActivatedAt: new Date().toISOString(),
+        premiumFeatures: {
+          aiSummarize: true,
+          aiActionItems: true,
+          aiFormat: true,
+          aiEmail: true
+        }
+      }, () => {
+        document.getElementById('status1').innerHTML = '<strong style="color: green;">✅ Premium Activated!</strong>';
+      });
+    }
+
+    function saveApiKey() {
+      const key = document.getElementById('apikey').value.trim();
+      if (!key) {
+        alert('Please enter an API key');
+        return;
+      }
+      chrome.storage.local.set({ openai_api_key: key }, () => {
+        document.getElementById('status2').innerHTML = '<strong style="color: green;">✅ API Key Saved!</strong>';
+      });
+    }
+
+    async function testSummary() {
+      const result = document.getElementById('result');
+      result.textContent = 'Loading...';
+
+      try {
+        const aiService = new AIService();
+        await aiService.initialize();
+
+        const summary = await aiService.summarizeNotes(
+          "Team meeting about Q4 planning. Sarah presented the marketing budget proposal for $50,000 to run ads across Google and Facebook. John suggested we could reallocate funds from the operations budget since we're under budget there. After discussion, everyone agreed this was the best approach. Finance team needs to approve by Friday. Mike will prepare the reallocation document. Launch date tentatively set for March 15th."
+        );
+
+        result.textContent = 'SUMMARY:\n\n' + summary;
+      } catch (error) {
+        result.textContent = 'ERROR: ' + error.message;
+        console.error(error);
+      }
+    }
+
+    async function testActions() {
+      const result = document.getElementById('result');
+      result.textContent = 'Loading...';
+
+      try {
+        const aiService = new AIService();
+        await aiService.initialize();
+
+        const items = await aiService.extractActionItems(
+          "Sprint planning meeting. John needs to complete the user authentication feature by Wednesday. Sarah will review the API documentation and provide feedback to the team. We need to schedule a follow-up meeting for next Tuesday at 2pm to review progress. Mike should prepare demo slides for the stakeholder presentation."
+        );
+
+        result.textContent = 'ACTION ITEMS:\n\n' + items;
+      } catch (error) {
+        result.textContent = 'ERROR: ' + error.message;
+        console.error(error);
+      }
+    }
+  </script>
+</body>
+</html>

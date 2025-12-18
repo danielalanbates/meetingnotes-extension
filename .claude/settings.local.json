@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//Users/daniel/Documents/aicode/17-Meeting_Tools/**)",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(awk:*)",
+      "Bash(open:*)",
+      "Bash(echo:*)",
+      "Bash(zip:*)",
+      "Bash(unzip:*)",
+      "Read(//Users/daniel/Downloads/**)",
+      "Bash(ffprobe:*)",
+      "Bash(ffmpeg:*)",
+      "Bash(python3:*)",
+      "Bash(node -c:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

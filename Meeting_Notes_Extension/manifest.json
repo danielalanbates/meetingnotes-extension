@@ -1,0 +1,46 @@
+{
+  "manifest_version": 3,
+  "name": "MeetingNotes",
+  "version": "2.0.0",
+  "description": "AI-powered meeting notes with voice-to-text, smart templates, action tracking, and analytics. Auto-detects meetings across Zoom, Google Meet, Teams, and 20+ platforms. Privacy-first: your notes stay local, only AI features use our secure API.",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "scripting",
+    "notifications",
+    "downloads",
+    "contextMenus",
+    "sidePanel",
+    "tabs",
+    "alarms",
+    "identity"
+  ],
+  "host_permissions": [
+    "https://*/*",
+    "https://www.googleapis.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*/*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "action": {
+    "default_title": "MeetingNotes"
+  },
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}

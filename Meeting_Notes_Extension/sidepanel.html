@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MeetingNotes</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Side panel specific overrides */
+    body {
+      width: 100% !important;
+      min-width: 300px;
+      max-width: none !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <div class="logo-section">
+        <img src="icons/meetingnotes-logo.svg" alt="MeetingNotes Logo" class="logo">
+        <h1>MeetingNotes</h1>
+      </div>
+      <div class="header-actions">
+        <button id="premiumBtn" class="icon-btn premium-btn" title="Upgrade to Premium">&#11088;</button>
+        <button id="themesBtn" class="icon-btn" title="Themes">&#127912;</button>
+        <button id="apiKeyBtn" class="icon-btn" title="Set OpenAI API Key">🔑</button>
+        <button id="integrationsBtn" class="icon-btn" title="Notes Integrations">🗒️</button>
+        <button id="settingsBtn" class="icon-btn" title="Settings">⚙️</button>
+      </div>
+    </header>
+
+    <!-- Meeting Info -->
+    <div class="meeting-info">
+      <div class="meeting-status" id="meetingStatus">
+        <span class="status-dot" id="statusDot"></span>
+        <span id="statusText">Not in meeting</span>
+      </div>
+      <!-- Hint shown when AI requires API key -->
+      <div id="premiumHint" style="display:none; margin-top:8px; font-size:13px; color:#B45309;">
+        ⚠️ AI features require an OpenAI API key. Go to <a href="premium.html" style="color:inherit;text-decoration:underline;">Premium</a> to set it up.
+      </div>
+      <div class="meeting-details" id="meetingDetails" style="display: none;">
+        <p class="meeting-title" id="meetingTitle"></p>
+        <p class="meeting-platform" id="meetingPlatform"></p>
+      </div>
+    </div>
+
+    <!-- Color Theme Selector -->
+    <div class="theme-section" id="themeSection">
+      <div class="theme-label">Interface Theme</div>
+      <div class="theme-options" id="themeOptions">
+        <button class="theme-btn active" data-color-theme="blue">Blue</button>
+        <button class="theme-btn" data-color-theme="purple">Purple</button>
+        <button class="theme-btn" data-color-theme="green">Green</button>
+        <button class="theme-btn" data-color-theme="dark">Dark</button>
+      </div>
+      <div class="template-quick-insert">
+        <select id="templateInsert" class="template-insert-select">
+          <option value="custom">Blank...</option>
+          <option value="general">Meeting Notes...</option>
+          <option value="standup">Daily Standup...</option>
+          <option value="1on1">One-on-One...</option>
+          <option value="retrospective">Retrospective...</option>
+        </select>
+      </div>
+    </div>
+
+
+    <!-- Notes Editor -->
+    <div class="notes-section">
+      <div class="editor-toolbar">
+        <div class="toolbar-group">
+          <button class="toolbar-btn" data-editor-command="bold" title="Bold"><b>B</b></button>
+          <button class="toolbar-btn" data-editor-command="italic" title="Italic"><i>I</i></button>
+          <button class="toolbar-btn" data-editor-command="underline" title="Underline"><u>U</u></button>
+          <button class="toolbar-btn" data-editor-command="strikeThrough" title="Strikethrough"><s>S</s></button>
+        </div>
+        <div class="toolbar-divider"></div>
+        <div class="toolbar-group">
+          <button class="toolbar-btn" data-editor-command="formatBlock" data-editor-value="h1" title="Heading 1"><strong>H1</strong></button>
+          <button class="toolbar-btn" data-editor-command="formatBlock" data-editor-value="h2" title="Heading 2"><strong>H2</strong></button>
+          <button class="toolbar-btn" data-editor-command="formatBlock" data-editor-value="h3" title="Heading 3"><strong>H3</strong></button>
+        </div>
+        <div class="toolbar-divider"></div>
+        <div class="toolbar-group">
+          <button class="toolbar-btn" data-editor-command="insertUnorderedList" title="Bullet List">&#8226;</button>
+          <button class="toolbar-btn" data-editor-command="insertOrderedList" title="Numbered List">1.</button>
+          <button class="toolbar-btn" data-editor-command="insertHTML" data-editor-value="<p>☐ Task item</p>" title="Task Checkbox">&#9745;</button>
+          <button class="toolbar-btn" data-editor-command="insertHTML" data-editor-value="<p>- List item</p>" title="Dashed List">&#8722;</button>
+        </div>
+        <div class="toolbar-divider"></div>
+        <div class="toolbar-group">
+          <button class="toolbar-btn" data-editor-command="formatBlock" data-editor-value="blockquote" title="Quote">&#8220;</button>
+          <button class="toolbar-btn" data-editor-command="formatBlock" data-editor-value="pre" title="Code">&lt;/&gt;</button>
+          <button class="toolbar-btn" data-editor-command="createLink" title="Link">&#128279;</button>
+        </div>
+        <div class="toolbar-divider"></div>
+        <div class="toolbar-group">
+          <button class="toolbar-btn" data-editor-command="highlight" title="Highlight">&#9998;</button>
+          <button class="toolbar-btn" id="voiceBtn" title="Voice Notes 🎤 (Premium)">🎤</button>
+          <button class="toolbar-btn premium-highlight" id="aiBtn" title="AI Features ✨ Unlocked">&#10024;</button>
+        </div>
+      </div>
+      <!-- Voice Recording Status -->
+      <div id="voiceStatus" class="voice-status" style="display: none;">
+        <div class="voice-indicator">
+          <span class="voice-dot"></span>
+          <span id="voiceStatusText">Listening...</span>
+        </div>
+        <div id="voiceInterim" class="voice-interim"></div>
+      </div>
+      <div id="notesEditor" class="notes-editor" contenteditable="true" role="textbox" aria-multiline="true" data-placeholder="Start taking notes..."></div>
+      <div class="editor-footer">
+        <span class="char-count" id="charCount">0 characters</span>
+        <span class="auto-save" id="autoSaveStatus">Auto-save on</span>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <button class="btn btn-secondary" id="clearBtn">Clear</button>
+      <button class="btn btn-secondary" id="exportBtn">Export</button>
+      <button class="btn btn-secondary" id="shareBtn">Share</button>
+      <button class="btn btn-primary" id="saveBtn">Save Note</button>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+      <button class="quick-btn" id="viewHistoryBtn">&#128203; View History</button>
+      <button class="quick-btn" id="searchBtn">🔍 Search Notes</button>
+      <button class="quick-btn" id="analyticsBtn">📊 Analytics</button>
+      <button class="quick-btn" id="calendarBtn">📅 Calendar</button>
+      <button class="quick-btn" id="templatesBtn">&#128221; Manage Templates</button>
+    </div>
+
+    <!-- AI Features (Premium Only) -->
+    <div class="ai-features-section" id="aiFeaturesSection" style="display: none;">
+      <div class="ai-features-header">
+        <span class="ai-features-label">✨ AI Features</span>
+        <span class="premium-badge-small">PREMIUM</span>
+      </div>
+      <div class="ai-features-grid">
+        <button class="ai-feature-btn" id="aiSummarizeBtn">
+          <span class="ai-feature-icon">📝</span>
+          <span class="ai-feature-text">Summarize</span>
+        </button>
+        <button class="ai-feature-btn" id="aiActionItemsBtn">
+          <span class="ai-feature-icon">✅</span>
+          <span class="ai-feature-text">Action Items</span>
+        </button>
+        <button class="ai-feature-btn" id="aiFormatBtn">
+          <span class="ai-feature-icon">✨</span>
+          <span class="ai-feature-text">Format</span>
+        </button>
+        <button class="ai-feature-btn" id="aiFollowUpBtn">
+          <span class="ai-feature-icon">📧</span>
+          <span class="ai-feature-text">Follow-up</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Integrations Modal -->
+  <div id="integrationsModal" class="modal" style="display: none;">
+    <div class="modal-content integrations-modal" role="dialog" aria-modal="true" aria-labelledby="integrationsModalTitle">
+      <div class="modal-header">
+        <h2 id="integrationsModalTitle">Notes Integrations</h2>
+        <button class="close-btn" id="closeIntegrationsModal">&times;</button>
+      </div>
+      <div class="modal-body integrations-body">
+        <p class="integrations-description">Connect cloud notes apps to send MeetingNotes instantly after each call.</p>
+        <div id="integrationsList" class="integrations-list" role="list"></div>
+        <p class="integrations-disclaimer">Authentication flows open a new tab and rely on provider APIs. We never see your credentials.</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Export Modal (Download formats only) -->
+  <div id="exportModal" class="modal" style="display: none;">
+    <div class="modal-content export-modal" role="dialog" aria-modal="true" aria-labelledby="exportModalTitle">
+      <div class="modal-header">
+        <h2 id="exportModalTitle">Export Notes</h2>
+        <button class="close-btn" id="closeExportModal">&times;</button>
+      </div>
+      <div class="modal-body export-modal-body">
+        <div class="download-section">
+          <h3>Standard formats</h3>
+          <div class="export-options">
+            <button class="export-option" data-format="txt">
+              <span class="export-icon">&#128196;</span>
+              <span>Plain Text (.txt)</span>
+            </button>
+            <button class="export-option" data-format="md">
+              <span class="export-icon">&#128221;</span>
+              <span>Markdown (.md)</span>
+            </button>
+            <button class="export-option" data-format="html">
+              <span class="export-icon">&#127760;</span>
+              <span>HTML (.html)</span>
+            </button>
+            <button class="export-option" data-format="json">
+              <span class="export-icon">&#128295;</span>
+              <span>JSON (.json)</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="premium-exports">
+          <h3>Premium formats</h3>
+          <div class="premium-options">
+            <button class="export-option premium-option locked" data-premium-format="word">
+              <span class="lock-badge">🔒</span>
+              <span class="export-icon">&#128209;</span>
+              <span>Microsoft Word (.doc)</span>
+            </button>
+            <button class="export-option premium-option locked" data-premium-format="pages">
+              <span class="lock-badge">🔒</span>
+              <span class="export-icon">&#128221;</span>
+              <span>Apple Pages (.pages)</span>
+            </button>
+            <button class="export-option premium-option locked" data-premium-format="gdocs">
+              <span class="lock-badge">🔒</span>
+              <span class="export-icon">&#128214;</span>
+              <span>Google Docs</span>
+            </button>
+          </div>
+          <p class="premium-note-inline">🔒 Unlock premium formats with AI Assist</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Share Modal (Email only) -->
+  <div id="shareModal" class="modal" style="display: none;">
+    <div class="modal-content export-modal" role="dialog" aria-modal="true" aria-labelledby="shareModalTitle">
+      <div class="modal-header">
+        <h2 id="shareModalTitle">Share Notes via Email</h2>
+        <button class="close-btn" id="closeShareModal">&times;</button>
+      </div>
+      <div class="modal-body export-modal-body">
+        <div class="email-share">
+          <label for="emailTo">Send via email</label>
+          <input id="emailTo" type="email" class="email-input" placeholder="Recipient email">
+          <input id="emailSubject" type="text" class="email-subject" placeholder="Email subject">
+          <textarea id="emailPreview" class="email-preview" placeholder="Preview message" readonly></textarea>
+          <div class="email-actions">
+            <button id="sendEmailBtn" class="btn btn-primary" type="button">Send Email</button>
+            <button id="copyEmailBtn" class="btn btn-secondary" type="button">Copy to Clipboard</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings Modal -->
+  <div id="settingsModal" class="modal" style="display: none;">
+    <div class="modal-content settings-modal-content" role="dialog" aria-modal="true" aria-labelledby="settingsModalTitle">
+      <div class="modal-header">
+        <h2 id="settingsModalTitle">Configuration</h2>
+        <button class="close-btn" id="closeSettingsModal">&times;</button>
+      </div>
+      <div class="modal-body settings-body">
+        <div class="settings-group">
+          <h3>Notes</h3>
+          <div class="setting-row">
+            <div class="setting-label">
+              <span>Auto-save notes</span>
+              <span>Automatically save while you type</span>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="toggleAutoSave">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="setting-row">
+            <div class="setting-label">
+              <span>Match system theme</span>
+              <span>Sync with your OS light or dark mode</span>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="toggleSystemTheme">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Template Manager Modal -->
+  <div id="templateManagerModal" class="modal" style="display: none;">
+    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="templateManagerModalTitle">
+      <div class="modal-header">
+        <h2 id="templateManagerModalTitle">Manage Templates</h2>
+        <button class="close-btn" id="closeTemplateManager">&times;</button>
+      </div>
+      <div class="modal-body" style="display:grid; grid-template-columns: 200px 1fr; gap:16px;">
+        <div>
+          <button id="newTemplateBtn" class="btn btn-primary" style="width:100%; margin-bottom:12px;">New Template</button>
+          <div id="templateList" class="template-list"></div>
+        </div>
+        <div>
+          <input type="text" id="templateTitleInput" placeholder="Template title" style="width:100%; padding:8px; margin-bottom:8px;">
+          <div id="templateContentEditor" contenteditable="true" style="min-height:200px; border:1px solid #ccc; padding:8px; border-radius:4px;"></div>
+          <div style="display:flex; gap:8px; margin-top:12px;">
+            <button id="saveTemplateBtn" class="btn btn-primary">Save</button>
+            <button id="deleteTemplateBtn" class="btn btn-secondary">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- API Key Modal (in-panel) -->
+  <div id="apiKeyModal" class="modal" style="display: none;">
+    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="apiKeyModalTitle">
+      <div class="modal-header">
+        <h2 id="apiKeyModalTitle">OpenAI API Key</h2>
+        <button class="close-btn" id="closeApiKeyModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Enter your OpenAI API key to enable AI features locally. It is stored in your browser's extension storage.</p>
+        <input type="password" id="sideApiKeyInput" placeholder="sk-..." style="width:100%; padding:8px; margin-top:8px;">
+        <div style="margin-top:12px; display:flex; gap:8px; justify-content:flex-end;">
+          <button id="saveSideApiKeyBtn" class="btn btn-primary">Save Key</button>
+          <button id="cancelSideApiKeyBtn" class="btn btn-secondary">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- History Modal -->
+  <div id="historyModal" class="modal" style="display: none;">
+    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="historyModalTitle">
+      <div class="modal-header">
+        <h2 id="historyModalTitle">Notes History</h2>
+        <button class="close-btn" id="closeHistoryModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="historyList" class="history-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Template Apply Confirmation Modal -->
+  <div id="templateApplyModal" class="modal" style="display: none;">
+    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="templateApplyModalTitle">
+      <div class="modal-header">
+        <h2 id="templateApplyModalTitle">Apply Template?</h2>
+        <button class="close-btn" id="closeTemplateApplyModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>You have existing notes. Would you like to:</p>
+        <div style="display:flex; flex-direction:column; gap:12px; margin-top:16px;">
+          <button id="replaceNotesBtn" class="btn btn-primary">Replace current notes</button>
+          <button id="appendTemplateBtn" class="btn btn-secondary">Append template below</button>
+          <button id="cancelTemplateBtn" class="btn btn-secondary">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search Modal -->
+  <div id="searchModal" class="modal" style="display: none;">
+    <div class="modal-content wide" role="dialog" aria-modal="true" aria-labelledby="searchModalTitle">
+      <div class="modal-header">
+        <h2 id="searchModalTitle">🔍 Search Notes</h2>
+        <button class="close-btn" id="closeSearchModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="text" id="searchInput" placeholder="Search notes, titles, tags..." class="search-input" />
+        <div class="search-filters">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="tags">Tags</button>
+          <button class="filter-btn" data-filter="platform">Platform</button>
+          <button class="filter-btn" data-filter="date">Date Range</button>
+        </div>
+        <div id="searchResults" class="search-results"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Analytics Modal -->
+  <div id="analyticsModal" class="modal" style="display: none;">
+    <div class="modal-content wide" role="dialog" aria-modal="true" aria-labelledby="analyticsModalTitle">
+      <div class="modal-header">
+        <h2 id="analyticsModalTitle">📊 Meeting Analytics</h2>
+        <button class="close-btn" id="closeAnalyticsModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="time-range-selector">
+          <button class="time-btn active" data-range="week">This Week</button>
+          <button class="time-btn" data-range="month">This Month</button>
+          <button class="time-btn" data-range="quarter">This Quarter</button>
+        </div>
+        <div id="analyticsContent" class="analytics-content"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Calendar Integration Modal -->
+  <div id="calendarModal" class="modal" style="display: none;">
+    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="calendarModalTitle">
+      <div class="modal-header">
+        <h2 id="calendarModalTitle">📅 Calendar Integration</h2>
+        <button class="close-btn" id="closeCalendarModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="calendarNotConnected" class="calendar-section">
+          <p>Connect your Google Calendar to automatically populate meeting details.</p>
+          <button id="connectCalendarBtn" class="btn btn-primary">Connect Google Calendar</button>
+        </div>
+        <div id="calendarConnected" class="calendar-section" style="display: none;">
+          <p class="success-message">✅ Google Calendar connected</p>
+          <div class="calendar-features">
+            <h4>Available Features:</h4>
+            <ul>
+              <li>Auto-populate meeting titles</li>
+              <li>Detect attendees from calendar events</li>
+              <li>Pre-fill meeting agendas</li>
+            </ul>
+          </div>
+          <button id="disconnectCalendarBtn" class="btn btn-secondary">Disconnect</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Action Items Modal -->
+  <div id="actionItemsModal" class="modal" style="display: none;">
+    <div class="modal-content wide" role="dialog" aria-modal="true" aria-labelledby="actionItemsModalTitle">
+      <div class="modal-header">
+        <h2 id="actionItemsModalTitle">📋 Action Items</h2>
+        <button class="close-btn" id="closeActionItemsModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="action-items-filters">
+          <button class="filter-btn active" data-status="all">All</button>
+          <button class="filter-btn" data-status="pending">Pending</button>
+          <button class="filter-btn" data-status="completed">Completed</button>
+          <button class="filter-btn" data-status="overdue">Overdue</button>
+        </div>
+        <div id="actionItemsList" class="action-items-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Meeting Comparison Modal (for recurring meetings) -->
+  <div id="comparisonModal" class="modal" style="display: none;">
+    <div class="modal-content wide" role="dialog" aria-modal="true" aria-labelledby="comparisonModalTitle">
+      <div class="modal-header">
+        <h2 id="comparisonModalTitle">📊 Compare with Previous Meeting</h2>
+        <button class="close-btn" id="closeComparisonModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="comparisonContent" class="comparison-content"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI Services -->
+  <script src="ai-service.js"></script>
+  <script src="voice-notes.js"></script>
+  <script src="meeting-detection.js"></script>
+  <script src="recurring-meeting.js"></script>
+  <script src="recipient-detection.js"></script>
+  <script src="action-items.js"></script>
+  <script src="search-analytics.js"></script>
+  <script src="calendar-integration.js"></script>
+  <script src="slack-teams-integration.js"></script>
+  <script src="translation-service.js"></script>
+  <script src="series-tracker.js"></script>
+
+  <!-- Main UI Logic -->
+  <script src="sidepanel.js"></script>
+
+  <!-- AI Features Integration -->
+  <script src="sidepanel-ai-integrations.js"></script>
+</body>
+</html>

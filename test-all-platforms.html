@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MeetingNotes - Platform Test Page</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 10px;
+      font-size: 36px;
+    }
+    .subtitle {
+      text-align: center;
+      margin-bottom: 40px;
+      opacity: 0.9;
+      font-size: 16px;
+    }
+    .instructions {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 30px;
+      backdrop-filter: blur(10px);
+    }
+    .instructions h2 {
+      margin-top: 0;
+      font-size: 20px;
+    }
+    .instructions ol {
+      margin: 10px 0;
+      padding-left: 20px;
+    }
+    .instructions li {
+      margin: 8px 0;
+      line-height: 1.6;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+    .platform-card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .platform-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+    }
+    .platform-name {
+      font-size: 18px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 12px;
+    }
+    .platform-link {
+      display: inline-block;
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: 500;
+      transition: opacity 0.2s;
+    }
+    .platform-link:hover {
+      opacity: 0.9;
+    }
+    .btn-open-all {
+      display: block;
+      width: 100%;
+      max-width: 400px;
+      margin: 0 auto 30px;
+      padding: 16px;
+      background: #10B981;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-open-all:hover {
+      background: #059669;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      opacity: 0.8;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎯 MeetingNotes Platform Test</h1>
+  <p class="subtitle">Test all 15 supported video conferencing platforms</p>
+
+  <div class="instructions">
+    <h2>📋 Testing Instructions</h2>
+    <ol>
+      <li><strong>Install the Extension:</strong> Make sure MeetingNotes extension is loaded in Chrome</li>
+      <li><strong>Open Platforms:</strong> Click individual platform links or "Open All Sites" button below</li>
+      <li><strong>⚠️ IMPORTANT:</strong> You must <strong>join or start an actual meeting</strong> for the extension to activate. Just visiting the homepage won't trigger the blue indicator!</li>
+      <li><strong>Look for Blue Indicator:</strong> When in a meeting, a blue "✓ Click to Open MeetingNotes" popup appears (top-right)</li>
+      <li><strong>Check Detection:</strong> Click indicator or extension icon to open the side panel</li>
+      <li><strong>Verify Status:</strong> Should show "In [Platform Name] meeting" (e.g., "In Zoom meeting")</li>
+      <li><strong>Test Features:</strong> Create notes, apply templates, save to history, and export</li>
+    </ol>
+  </div>
+
+  <button class="btn-open-all" onclick="openAllPlatforms()">🚀 Open All Sites (15 tabs)</button>
+
+  <div class="grid">
+    <div class="platform-card">
+      <div class="platform-name">1. Zoom</div>
+      <a href="https://zoom.us/test" target="_blank" class="platform-link">Open Zoom Test Page</a>
+    </div>
+
+    <div class="platform-card">
+      <div class="platform-name">2. Google Meet</div>
+      <a href="https://meet.google.com/" target="_blank" class="platform-link">Open Google Meet</a>
+    </div>
+
+    <div class="platform-card">
+      <div class="platform-name">3. Microsoft Teams</div>
+      <a href="https://teams.microsoft.com/" target="_blank" class="platform-link">Open Microsoft Teams</a>
+    </div>
+
+    <div class="platform-card">
+      <div class="platform-name">4. Webex</div>
+      <a href="https://www.webex.com/" target="_blank" class="platform-link">Open Webex</a>
+    </div>
+
+    <div class="platform-card">
+      <div class="platform-name">5. Whereby</div>
+      <a href="https://whereby.com/" target="_blank" class="platform-link">Open Whereby</a>
+    </div>
+
+    <div class="platform-card">
+      <div class="platform-name">6. BlueJeans</div>
+      <a href="https://www.bluejeans.com/" target="_blank" class="platform-link">Open BlueJeans</a>
+    </div>
+
+    <div class="platform-card">
+      <div class="platform-name">7. GoToMeeting</div>
+      <a href="https://www.gotomeeting.com/" target="_blank" class="platform-link">Open GoToMeeting</a>
+    </div>
+
+    <div class="platform-card">
+      <div class="platform-name">8. RingCentral</div>
+      <a href="https://www.ringcentral.com/" target="_blank" class="platform-link">Open RingCentral</a>
+    </div>
+
+    <div class="platform-card">
+      <div class="platform-name">9. Skype (redirects to Teams)</div>
+      <a href="https://www.skype.com/" target="_blank" class="platform-link">Open Skype</a>
+    </div>
+
+    <div class="platform-card">
+      <div class="platform-name">10. Slack</div>
+      <a href="https://slack.com/" target="_blank" class="platform-link">Open Slack</a>
+    </div>
+
+    <div class="platform-card">
+      <div class="platform-name">11. Dialpad</div>
+      <a href="https://www.dialpad.com/" target="_blank" class="platform-link">Open Dialpad</a>
+    </div>
+
+    <div class="platform-card">
+      <div class="platform-name">12. Amazon Chime</div>
+      <a href="https://chime.aws/" target="_blank" class="platform-link">Open Amazon Chime</a>
+    </div>
+
+    <div class="platform-card">
+      <div class="platform-name">13. Discord</div>
+      <a href="https://discord.com/" target="_blank" class="platform-link">Open Discord</a>
+    </div>
+
+    <div class="platform-card">
+      <div class="platform-name">14. Jitsi Meet</div>
+      <a href="https://meet.jit.si/" target="_blank" class="platform-link">Open Jitsi Meet</a>
+    </div>
+
+    <div class="platform-card">
+      <div class="platform-name">15. Around</div>
+      <a href="https://www.around.co/" target="_blank" class="platform-link">Open Around</a>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p><strong>MeetingNotes Extension Testing</strong></p>
+    <p>Powered by BatesAI</p>
+  </div>
+
+  <script>
+    const platforms = [
+      'https://zoom.us/test',
+      'https://meet.google.com/',
+      'https://teams.microsoft.com/',
+      'https://www.webex.com/',
+      'https://whereby.com/',
+      'https://www.bluejeans.com/',
+      'https://www.gotomeeting.com/',
+      'https://www.ringcentral.com/',
+      'https://www.skype.com/',
+      'https://slack.com/',
+      'https://www.dialpad.com/',
+      'https://chime.aws/',
+      'https://discord.com/',
+      'https://meet.jit.si/',
+      'https://www.around.co/'
+    ];
+
+    function openAllPlatforms() {
+      const confirmOpen = confirm('This will open 15 tabs. Continue?');
+      if (confirmOpen) {
+        platforms.forEach((url, index) => {
+          setTimeout(() => {
+            window.open(url, '_blank');
+          }, index * 200); // Stagger opening to prevent browser blocking
+        });
+      }
+    }
+  </script>
+</body>
+</html>
